@@ -13,7 +13,23 @@ TEXT = "Somewhere a kettle has just boiled, and nobody is in a hurry to pour it.
 OUTPUT_PATH = "/output/entry.txt"
 
 
+def validate_text(text: str) -> None:
+    """Self-check the entry text against the competition's limits.
+
+    The text must be 1-280 Unicode code points long (len() on a str
+    counts code points) and must not be only whitespace.
+    """
+    length = len(text)
+    if not 1 <= length <= 280:
+        raise SystemExit(
+            f"entry text must be 1-280 characters long, got {length}"
+        )
+    if not text.strip():
+        raise SystemExit("entry text must not be only whitespace")
+
+
 def main() -> None:
+    validate_text(TEXT)
     os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
     with open(OUTPUT_PATH, "w", encoding="utf-8", newline="") as f:
         f.write(TEXT)
